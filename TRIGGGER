@@ -1,0 +1,63 @@
+-- Trigger para registrar en una tabla de auditoría los cambios en PROVEEDOR
+CREATE TRIGGER trgAfterInsertProveedor
+ON [BDVENTAS].[dbo].[PROVEEDOR]
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    INSERT INTO [BDVENTAS].[dbo].[ProveedorAudit] (COD_PRV, RSO_PRV, DIR_PRV, TEL_PRV, COD_DIS, REP_PRV, ActionDate, ActionType)
+    SELECT COD_PRV, RSO_PRV, DIR_PRV, TEL_PRV, COD_DIS, REP_PRV, GETDATE(), 'INSERTED'
+    FROM inserted;
+END;
+
+
+-- Trigger para registrar en una tabla de auditoría los cambios en VENDEDOR
+CREATE TRIGGER trgAfterInsertVendedor
+ON [BDVENTAS].[dbo].[VENDEDOR]
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    INSERT INTO [BDVENTAS].[dbo].[VendedorAudit] (COD_VEN, NOM_VEN, APE_VEN, SUE_VEN, FTI_VEN, TIP_VEN, COD_DIS, ActionDate, ActionType)
+    SELECT COD_VEN, NOM_VEN, APE_VEN, SUE_VEN, FTI_VEN, TIP_VEN, COD_DIS, GETDATE(), 'INSERTED'
+    FROM inserted;
+END;
+
+
+-- Trigger para registrar en una tabla de auditoría los cambios en DISTRITO
+CREATE TRIGGER trgAfterInsertDistrito
+ON [BDVENTAS].[dbo].[DISTRITO]
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    INSERT INTO [BDVENTAS].[dbo].[DistritoAudit] (COD_DIS, NOM_DIS, ActionDate, ActionType)
+    SELECT COD_DIS, NOM_DIS, GETDATE(), 'INSERTED'
+    FROM inserted;
+END;
+
+
+-- Trigger para registrar en una tabla de auditoría los cambios en PRODUCTO
+CREATE TRIGGER trgAfterInsertProducto
+ON [BDVENTAS].[dbo].[PRODUCTO]
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    INSERT INTO [BDVENTAS].[dbo].[ProductoAudit] (COD_PRO, DES_PRO, PRE_PRO, SAC_PRO, SMI_PRO, UNI_PRO, LIN_PRO, IMP_PRO, ActionDate, ActionType)
+    SELECT COD_PRO, DES_PRO, PRE_PRO, SAC_PRO, SMI_PRO, UNI_PRO, LIN_PRO, IMP_PRO, GETDATE(), 'INSERTED'
+    FROM inserted;
+END;
+
+
+-- Trigger para registrar en una tabla de auditoría los cambios en CLIENTE
+CREATE TRIGGER trgAfterInsertCliente
+ON [BDVENTAS].[dbo].[CLIENTE]
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    INSERT INTO [BDVENTAS].[dbo].[ClienteAudit] (COD_CLI, RSO_CLI, DIR_CLI, TLF_CLI, RUC_CLI, COD_DIS, FEC_REG, TIP_CLI, CON_CLI, ActionDate, ActionType)
+    SELECT COD_CLI, RSO_CLI, DIR_CLI, TLF_CLI, RUC_CLI, COD_DIS, FEC_REG, TIP_CLI, CON_CLI, GETDATE(), 'INSERTED'
+    FROM inserted;
+END;
